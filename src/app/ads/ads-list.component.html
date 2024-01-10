@@ -1,0 +1,33 @@
+<h2>Seznam oglasov</h2>
+
+<form *ngIf="filters">
+    <h3>Filtriranje</h3>
+    <div>Izvor</div>
+    <label for="sources">Izvori</label>
+    <input [(ngModel)]="filters.sources" id="sources" name="sources" />
+</form>
+
+<form *ngIf="sorting">
+    <h3>Razvrščanje</h3>
+    <!-- <div>Izvor</div>
+    <label for="sources">Izvori</label>
+    <input [(ngModel)]="filters.sources" id="sources" name="sources" /> -->
+</form>
+
+<ul class="list">
+    <li *ngFor="let ad of ads?.items" (click)="adDetails(ad)">
+        <div class="ad-source">Vir: {{ad.source}}</div>
+        <div>Model: {{ad.modelId}}</div>
+        <div>Naziv: {{ad.title}}</div>
+        <button class="delete" (click)="delete(ad); $event.stopPropagation()">x</button>
+    </li>
+    <li *ngIf="!ads || ads?.items.length == 0">
+        <span>
+            Trenutno ni oglasov za prikaz.
+        </span>
+    </li>
+</ul>
+
+<div>
+    <small>Iskanju ustreza {{ads?.totalCount ?? '?'}} oglasov.</small>
+</div>
