@@ -1,0 +1,22 @@
+<h2>Debug</h2>
+
+<h3>Catalog service</h3>
+<div>
+    <div>URL: {{catalogUrl ?? '???'}}</div>
+    <div>Name: {{catalogInfo?.name ?? '???'}}</div>
+    <div>Environment: {{catalogInfo?.environment ?? '???'}}</div>
+    <div>Version: {{catalogInfo?.version ?? '???'}}</div>
+
+    <button (click)="breakCatalog()">Postavi v okvaro</button>
+</div>
+
+<h3>Loader agent service</h3>
+<div>
+    <div>URL: {{loaderUrl ?? '???'}}</div>
+    <div>Name: {{loaderInfo?.name ?? '???'}}</div>
+    <div>Environment: {{loaderInfo?.environment ?? '???'}}</div>
+    <div>Version: {{loaderInfo?.version ?? '???'}}</div>
+
+    <button (click)="breakLoader()">Postavi v okvaro</button>
+</div>
+

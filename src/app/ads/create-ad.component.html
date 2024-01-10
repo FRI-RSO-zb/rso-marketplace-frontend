@@ -1,0 +1,57 @@
+<h2>Ustvari oglas</h2>
+<div *ngIf="item">
+    <form (ngSubmit)="submitForm()" ngNativeValidate>
+        <table>
+            <tr>
+                <td><label for="title">Naslov</label></td>
+                <td><input [(ngModel)]="item.title" id="title" name="title" required /></td>
+            </tr>
+            <tr>
+                <td><label for="source">Izvor (uvoženo iz druge strani)</label></td>
+                <td><input [(ngModel)]="item.source" id="source" name="source" /></td>
+            </tr>
+            <tr>
+                <td><label for="sourceId">Izvorni ID</label></td>
+                <td><input [(ngModel)]="item.sourceId" id="sourceId" name="sourceId" /></td>
+            </tr>
+            <tr>
+                <td><label for="sellerId">Prodajalec</label></td>
+                <select id="sellerId" name="sellerId" *ngIf="sellers" (change)="sellerSelected($event.target.value)">
+                    <option>----------------</option>
+                    <option *ngFor="let s of sellers" [value]="s.id">
+                        {{s.name}}
+                    </option>
+                </select>
+            </tr>
+
+            <tr>
+                <td><label for="brand">Znamka</label></td>
+                <td><select id="brand" name="brand" *ngIf="brands" (change)="brandSelected($event.target.value)">
+                        <option>----------------</option>
+                        <option *ngFor="let b of brands" [value]="b.id">
+                            {{b.name}}
+                        </option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td><label for="model">Model</label></td>
+                <td><select id="model" name="model" *ngIf="models" (change)="modelSelected($event.target.value)">
+                        <option>----------------</option>
+                        <option *ngFor="let m of models" [value]="m.id">
+                            {{m.name}}
+                        </option>
+                    </select>
+                </td>
+            </tr>
+
+            <tr>
+                <td><label for="otherData">Dodatni podatki (JSON)</label></td>
+                <td><input [(ngModel)]="otherData" id="otherData" name="otherData" /></td>
+            </tr>
+        </table>
+
+        <br />
+        <button type="submit">Ustvari</button>
+    </form>
+</div>

@@ -1,27 +1,91 @@
 <h2>Seznam oglasov</h2>
 
-<form *ngIf="filters">
-    <h3>Filtriranje</h3>
-    <div>Izvor</div>
-    <label for="sources">Izvori</label>
-    <input [(ngModel)]="filters.sources" id="sources" name="sources" />
-</form>
+<button (click)="create()">Ustvari nov oglas</button>
 
-<form *ngIf="sorting">
-    <h3>Razvrščanje</h3>
-    <!-- <div>Izvor</div>
-    <label for="sources">Izvori</label>
-    <input [(ngModel)]="filters.sources" id="sources" name="sources" /> -->
+<form *ngIf="filters" (ngSubmit)="getList()">
+    <h3>Filtriranje</h3>
+    <div>Izvor:
+        <input [checked]="filters.sources.marketplace" (change)="updateSource('marketplace', $event.target.checked)"
+            type="checkbox">Marketplace |
+        <input [checked]="filters.sources.avtonet" (change)="updateSource('avtonet', $event.target.checked)"
+            type="checkbox">Avtonet |
+        <input [checked]="filters.sources.bolha" (change)="updateSource('bolha', $event.target.checked)"
+            type="checkbox">Bolha |
+        <input [checked]="filters.sources.doberavto" (change)="updateSource('doberavto', $event.target.checked)"
+            type="checkbox">Doberavto |
+        <input [checked]="filters.sources.oglasisi" (change)="updateSource('oglasisi', $event.target.checked)"
+            type="checkbox">Oglasi.si |
+        <input [checked]="filters.sources.salomon" (change)="updateSource('salomon', $event.target.checked)"
+            type="checkbox">Salomon
+    </div>
+    <label for="limit">Količina prikaza</label>&nbsp;
+    <input [(ngModel)]="filters.limit" id="limit" name="limit" /> |
+    <label for="offset">Zamik</label>&nbsp;
+    <input [(ngModel)]="filters.offset" id="offset" name="offset" />
+
+    <br />
+
+    <label for="order">Razvrsti po</label>&nbsp;
+    <select id="order" name="order" (change)="changeOrdering($event.target.value)">
+        <option value="">----------------</option>
+        <option value="model.brand.name ASC">Po znamki naraščujoče (A-Z)</option>
+        <option value="model.brand.name DESC">Po znamki padajoče (Z-A)</option>
+        <option value="source ASC">Po izvoru podatkov naraščujoče (A-Z)</option>
+        <option value="source DESC">Po znamki padajoče (Z-A)</option>
+    </select>
+
+    <br />
+
+    <button type="submit">Filtriraj</button>
+
 </form>
 
 <ul class="list">
-    <li *ngFor="let ad of ads?.items" (click)="adDetails(ad)">
-        <div class="ad-source">Vir: {{ad.source}}</div>
-        <div>Model: {{ad.modelId}}</div>
-        <div>Naziv: {{ad.title}}</div>
-        <button class="delete" (click)="delete(ad); $event.stopPropagation()">x</button>
+    <li *ngFor="let item of items">
+        <div class="ad-source">Vir:
+            <a href="{{item.originalUri}}" *ngIf="item.originalUri">{{item.source}}</a>
+            <span *ngIf="!item.originalUri">{{item.source}}</span>
+        </div>
+        <div>
+            <button class="delete" (click)="delete(item); $event.stopPropagation()">x</button>
+            <span class="brand">{{(models.get(item.modelId) ? brands.get(models.get(item.modelId)?.brandId)?.name
+                :
+                models.get(item.modelId)?.brandId) ?? '??' }}</span> -
+            <span class="model">{{models.get(item.modelId)?.name ?? item.modelId}}</span>
+            <hr>
+        </div>
+        <div (click)="openDetails(item)" style="cursor: pointer;">
+            <div style="display: inline-block; margin-right: 16px;">
+                <img *ngIf="item.photoUri" src="{{item.photoUri}}" width="100" />
+            </div>
+
+            <div style="display: inline-block;vertical-align: top;">
+                <div>{{item.title}}</div>
+                <div *ngIf="item._otherData?.firstRegistrationDate">
+                    Prva registracija: {{item._otherData.firstRegistrationDate}}
+                </div>
+                <div *ngIf="item._otherData?.drivenDistanceKm">
+                    Prva registracija: {{item._otherData.drivenDistanceKm}}
+                </div>
+                <div *ngIf="item._otherData?.engineType">
+                    Motor: {{item._otherData.engineType}}
+                    <span *ngIf="item._otherData?.enginePowerKW">
+                        | {{item._otherData.engineType.enginePowerKW}} KW
+                    </span>
+                    <span *ngIf="item._otherData?.engineDisplacementCcm">
+                        | {{item._otherData.engineType.engineDisplacementCcm}} ccm
+                    </span>
+                </div>
+                <div *ngIf="item._otherData?.transmissionType">
+                    Menjalnik: {{item._otherData.transmissionType}}
+                </div>
+                <div class="price" *ngIf="item._otherData?.priceEur">
+                    Cena: {{item._otherData.priceEur}}&euro;
+                </div>
+            </div>
+        </div>
     </li>
-    <li *ngIf="!ads || ads?.items.length == 0">
+    <li *ngIf="!items || items?.length == 0">
         <span>
             Trenutno ni oglasov za prikaz.
         </span>
@@ -29,5 +93,5 @@
 </ul>
 
 <div>
-    <small>Iskanju ustreza {{ads?.totalCount ?? '?'}} oglasov.</small>
+    <small>Prikazano {{ items?.length ?? '?' }} oglasov.</small>
 </div>

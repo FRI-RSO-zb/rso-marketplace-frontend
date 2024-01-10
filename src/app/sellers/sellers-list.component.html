@@ -1,0 +1,37 @@
+<h2>Seznam prodajalcev</h2>
+
+<button (click)="create()">Ustvari novega prodajalca</button>
+<!-- 
+<form *ngIf="filters">
+    <h3>Filtriranje</h3>
+    <div>Izvor</div>
+    <label for="sources">Izvori</label>
+    <input [(ngModel)]="filters.sources" id="sources" name="sources" />
+</form> -->
+
+<!-- <form *ngIf="sorting"> -->
+    <!-- <h3>Razvrščanje</h3> -->
+    <!-- <div>Izvor</div>
+    <label for="sources">Izvori</label>
+    <input [(ngModel)]="filters.sources" id="sources" name="sources" /> -->
+<!-- </form> -->
+
+<ul class="list">
+    <li *ngFor="let item of items" (click)="openDetails(item)">
+        <button class="delete" (click)="delete(item); $event.stopPropagation()">x</button>
+        <!-- <div class="ad-source">Vir: {{item.source}}</div> -->
+        <!-- <div>Ime: {{item.modelId}}</div> -->
+        <div>Naziv: {{item.name}}</div>
+        <div>Lokacija: {{item.location}}</div>
+        <div>Kontakt: {{item.contact}}</div>
+    </li>
+    <li *ngIf="!items || items?.length == 0">
+        <span>
+            Trenutno ni prodajalcev za prikaz.
+        </span>
+    </li>
+</ul>
+
+<div>
+    <small>Prikazano {{ items?.length ?? '?' }} prodajalcev.</small>
+</div>

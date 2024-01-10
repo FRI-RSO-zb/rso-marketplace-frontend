@@ -1,0 +1,22 @@
+<h2>Ustvari znamko</h2>
+<div *ngIf="item">
+    <form (ngSubmit)="submitForm()" ngNativeValidate>
+        <table>
+            <tr>
+                <td><label for="name">Naziv</label></td>
+                <td><input [(ngModel)]="item.name" id="v" name="name" required /></td>
+            </tr>
+            <tr>
+                <td><label for="primaryIdentifier">Glavna oznaka</label></td>
+                <td><input [(ngModel)]="item.primaryIdentifier" id="primaryIdentifier" name="primaryIdentifier" /></td>
+            </tr>
+            <tr>
+                <td><label for="identifiers">Oznake</label></td>
+                <td><input [(ngModel)]="item.identifiers" id="identifiers" name="identifiers" /></td>
+            </tr>
+        </table>
+
+        <br />
+        <button type="submit">Ustvari</button>
+    </form>
+</div>

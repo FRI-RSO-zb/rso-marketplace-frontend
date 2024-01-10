@@ -8,4 +8,5 @@ export class Ad {
     sellerId: number;
     modelId: number;
     otherData: string;
+    _otherData: any;
 }
